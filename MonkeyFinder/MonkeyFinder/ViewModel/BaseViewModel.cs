@@ -19,6 +19,8 @@ namespace MonkeyFinder.ViewModel
             }
         }
 
+        public bool IsNotBusy => !IsBusy;
+
         public string Title
         {
             get => title;
