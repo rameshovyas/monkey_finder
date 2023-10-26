@@ -16,6 +16,8 @@ namespace MonkeyFinder.ViewModel
                 if(isBusy == value) return;
                 isBusy = value;
                 OnPropertyChanged();
+
+                OnPropertyChanged(nameof(IsNotBusy));
             }
         }
 
