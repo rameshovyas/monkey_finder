@@ -2,49 +2,56 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:model = "clr-namespace:MonkeyFinder.Model"
-             x:Class="MonkeyFinder.MainPage">   
-       <CollectionView>
-            <CollectionView.ItemsSource>
-                <x:Array Type="{x:Type model:Monkey}">
-                    <model:Monkey
-                     Name= "Baboon"
-                     Location = "Africa and Asia"                     
-                     Image = "https://raw.githubusercontent.com/jamesmontemagno/app-monkeys/master/baboon.jpg"/>
+             xmlns:viewmodel = "clr-namespace:MonkeyFinder.ViewModel"
+             x:DataType="viewmodel:MonkeysViewModel"
+             x:Class="MonkeyFinder.MainPage"
+             Title="{Binding Title}">
 
-                    <model:Monkey
-                     Name= "Capuchin Monkey"
-                     Location = "Central and South America"                   
-                     Image = "https://raw.githubusercontent.com/jamesmontemagno/app-monkeys/master/capuchin.jpg"/>
-
-                    <model:Monkey
-                     Name= "Blue Monkey"
-                     Location = "Central and East Africa"                     
-                     Image = "https://raw.githubusercontent.com/jamesmontemagno/app-monkeys/master/bluemonkey.jpg"/>
-
-
-                </x:Array>
-            </CollectionView.ItemsSource>
+    <Grid
+        ColumnDefinitions="*,*"
+        ColumnSpacing="5"
+        RowDefinitions="*,Auto"
+        RowSpacing="0">
+        <CollectionView ItemsSource="{Binding Monkeys}"
+                        SelectionMode="None"
+                        Grid.ColumnSpan="2">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="model:Monkey">
-                    <HorizontalStackLayout Padding="10">
-                        <Image 
-                        Aspect="AspectFill"
-                        HeightRequest="100"
-                        Source="{Binding Image}"
-                        WidthRequest="100"/>
-                        <Label VerticalOptions="Center">
-                            <Label.Text>
-                                <MultiBinding StringFormat="{}{0} | {1}">
-                                    <Binding Path="Name"/>
-                                    <Binding Path="Location"/>
-                                </MultiBinding>
-                            </Label.Text>
-                        </Label>
-                    </HorizontalStackLayout>
+                    <Grid Padding="10">
+                        <Frame HeightRequest="125" Style="{StaticResource CardView}">
+                            <Grid Padding="0" ColumnDefinitions="125,*">
+                                <Image Aspect="AspectFill" Source="{Binding Image}" WidthRequest="125" HeightRequest="125"/>
+                                <StackLayout
+                                    Grid.Column="1"
+                                    Padding="10"
+                                    VerticalOptions="Center">
+                                    <Label Style="{StaticResource LargeLabel}" Text="{Binding Name}"/>
+                                    <Label Style="{StaticResource MediumLabel}" Text="{Binding Location}"/>
+                                </StackLayout>
+                            </Grid>
+                        </Frame>
+                    </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-        </CollectionView>   
+        </CollectionView>
+            
+        <Button
+            Text="Get Monkeys"
+            Command="{Binding GetMonkeysCommand}"
+            IsEnabled="{Binding IsNotBusy}"
+            Grid.Row="1"
+            Grid.Column="0"
+            Style="{StaticResource ButtonOutline}"
+            Margin="8"/>
 
+        <ActivityIndicator IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}"
+                               HorizontalOptions="FillAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               Grid.RowSpan="2"
+                               Grid.ColumnSpan="2"/>
+
+    </Grid>
        
 
 </ContentPage>

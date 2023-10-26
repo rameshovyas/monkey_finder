@@ -7,7 +7,7 @@ namespace MonkeyFinder.ViewModel
 {
     public class MonkeysViewModel : BaseViewModel
     {
-        public ObservableCollection<Monkey> Monkeys = new();
+        public ObservableCollection<Monkey> Monkeys { get; }
         public Command GetMonkeysCommand { get; }
         MonkeyService monkeyService;
         public MonkeysViewModel(MonkeyService monkeyService) 
@@ -15,6 +15,7 @@ namespace MonkeyFinder.ViewModel
             Title = "Monkey Finder";
             this.monkeyService = monkeyService;
             GetMonkeysCommand = new Command(async () => await GetMonkeysAsync());
+            Monkeys = new();
         }
 
         async Task GetMonkeysAsync()
